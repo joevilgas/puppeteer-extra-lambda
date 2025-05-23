@@ -1,4 +1,8 @@
 #!/bin/bash
+set -e
+set -x
+
+echo "Deploying to AWS account: $AWS_ACCOUNT_ID"
 
 echo "command - npx tsc"
 npx tsc
