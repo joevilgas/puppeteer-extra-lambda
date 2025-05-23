@@ -18,11 +18,8 @@ phases:
       - echo "Installing dependencies..."
       - npm install
       - chmod +x $CODEBUILD_SRC_DIR/deploy.sh
-      - echo "AWS Account ID: $AWS_ACCOUNT_ID"
 
   build:
     commands:
       - echo "Starting build..."
       - $CODEBUILD_SRC_DIR/deploy.sh $AWS_ACCOUNT_ID
-
-
