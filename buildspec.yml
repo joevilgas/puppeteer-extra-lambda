@@ -1,8 +1,10 @@
 version: 0.2
 env:
   variables:
-    REGION: <region>
+    REGION: us-east-1
     VERSION: "1"
+  parameter-store:
+    AWS_ACCOUNT_ID: /custom-scraping/aws_account_id
 
 phases:
   install:
@@ -14,8 +16,9 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install
+      - chmod +x $CODEBUILD_SRC_DIR/deploy.sh
   build:
     on-failure: ABORT
     commands:
       - echo "Building..."
-      - $CODEBUILD_SRC_DIR/deploy.sh
+      - $CODEBUILD_SRC_DIR/deploy.sh $AWS_ACCOUNT_ID
