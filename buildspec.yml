@@ -8,21 +8,20 @@ env:
 
 phases:
   install:
-    on-failure: ABORT
     runtime-versions:
       nodejs: 20
-    commands: []
-    
+    commands:
+      - echo "Install phase started"
+
   pre_build:
-    on-failure: ABORT
     commands:
       - echo "Installing dependencies..."
       - npm install
       - chmod +x $CODEBUILD_SRC_DIR/deploy.sh
       - echo "AWS Account ID: $AWS_ACCOUNT_ID"
-      
+
   build:
-    on-failure: ABORT
     commands:
       - echo "Building..."
       - $CODEBUILD_SRC_DIR/deploy.sh $AWS_ACCOUNT_ID
+
