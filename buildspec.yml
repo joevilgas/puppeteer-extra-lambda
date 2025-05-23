@@ -2,23 +2,29 @@ version: 0.2
 env:
   variables:
     REGION: us-east-1
-    VERSION: "1"
+  parameter-store:
+    AWS_ACCOUNT_ID: /custom-scraping/aws_account_id
 
 phases:
   install:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo "Install phase started"
+      - echo "Installing system dependencies..."
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip
+      - sudo ./aws/install
 
   pre_build:
     commands:
-      - echo "Installing dependencies..."
+      - echo "Pre-build phase..."
       - npm install
       - chmod +x $CODEBUILD_SRC_DIR/deploy.sh
+      - ls -la $CODEBUILD_SRC_DIR/
 
   build:
     commands:
-      - echo "Building..."
-      - $CODEBUILD_SRC_DIR/deploy.sh
+      - echo "Build phase..."
+      - echo "AWS Account: $AWS_ACCOUNT_ID"
+      - bash -x $CODEBUILD_SRC_DIR/deploy.sh $AWS_ACCOUNT_ID || { echo "Deploy failed"; exit 1; }
 
